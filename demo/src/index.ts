@@ -2,8 +2,29 @@
 
 import { Vector } from "../../src";
 
-let canvas = document.getElementById("nodeview") as HTMLCanvasElement;
+let canvas = document.getElementById("Transmutation") as HTMLCanvasElement;
 let ctx = canvas.getContext("2d");
+
+const characters = "ᏗᏰፈᎴᏋᎦᎶᏂᎥᏠᏦᏝᎷᏁᎧᎮᎤᏒᏕᏖᏬᏉᏇጀᎩፚ";
+
+const drawCircleText = (pos: Vector, radius: number, fontSize: number) => {
+  const letters = (radius / fontSize) * 4;
+  const angle = (Math.PI * 2) / letters;
+  ctx.font = Math.round(fontSize) + "px serif";
+  ctx.textAlign = "center";
+  ctx.fillStyle = "black";
+  for (let i = 0; i < letters; i++) {
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate(angle * i);
+    ctx.fillText(
+      characters[Math.floor(Math.random() * characters.length)],
+      radius,
+      0
+    );
+    ctx.restore();
+  }
+};
 
 const drawCircle = (pos: Vector, radius: number) => {
   ctx.strokeStyle = "black";
@@ -159,6 +180,8 @@ const draw = (width: number, height: number) => {
   drawCircle(middleCords, maxRadius);
   drawCircle(middleCords, maxRadius * 0.95);
 
+  drawCircleText(middleCords, maxRadius * 0.88, 40);
+
   drawCircle(middleCords, maxRadius * 0.8);
   drawPolygon(middleCords, maxRadius * 0.8, 6, Math.PI / 2);
   drawPolygon(middleCords, maxRadius * 0.8, 3, Math.PI / 2);
@@ -179,6 +202,7 @@ const draw = (width: number, height: number) => {
     Math.PI / 6,
     maxRadius / 2.3
   );
+  drawCircleText(middleCords, maxRadius * 0.33, 20);
 
   drawPolyMidpointCircles(
     middleCords,
@@ -192,6 +216,7 @@ const draw = (width: number, height: number) => {
   drawCircle(middleCords, maxRadius * 0.69);
 
   drawCircle(middleCords, maxRadius * 0.2);
+  drawCircleText(middleCords, maxRadius * 0.175, 20);
   drawCircle(middleCords, maxRadius * 0.15);
 };
 
