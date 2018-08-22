@@ -42,4 +42,19 @@ class Vector {
       )
     );
   }
+
+  public midpoint(otherPoint): Vector {
+    return new Vector(
+      (otherPoint._x + this._x) / 2,
+      (otherPoint._y + this._y) / 2
+    );
+  }
+
+  public normal(): Vector {
+    return this.scale(1.0 / this.magnitude());
+  }
+
+  public magnitude(): number {
+    return Math.sqrt(Math.pow(this._x, 2) + Math.pow(this._y, 2));
+  }
 }
