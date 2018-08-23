@@ -37,11 +37,6 @@ class Transmutation {
       );
     }
 
-    // this.ctx.lineTo(
-    //   pos.x() + radius * Math.cos(rotation + angleIncrement * sides - 1),
-    //   pos.y() + radius * Math.sin(rotation + angleIncrement * sides - 1)
-    // );
-
     this.ctx.closePath();
 
     this.ctx.stroke();

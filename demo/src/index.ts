@@ -28,9 +28,7 @@ const RandomBorder = (maxRadius: number, middleCords: Vector): number => {
 };
 
 const RandomMiddle = (maxRadius: number, middleCords: Vector): number => {
-  const sides = 3 + Math.round(Math.random() * 3);
-
-  //const sides = 4;
+  const sides = 3 + Math.round(Math.random() * 5);
   const apothem = maxRadius * Math.cos(Math.PI / sides);
 
   transmutation.Polygon(middleCords, maxRadius, sides * 2, Math.PI / 2);
@@ -72,22 +70,39 @@ const RandomMiddle = (maxRadius: number, middleCords: Vector): number => {
   return (apothem - midpointCircleRadius) * 0.9;
 };
 
+const DrawInner = (maxRadius: number, middleCords: Vector) => {
+  const circles = 1 + Math.round(Math.random() * 2);
+  let remainingRadius = 1;
+  for (let i = 0; i < circles; i++) {
+    var radius = 0.3 * Math.random();
+
+    if (Math.random() >= 0.5) {
+      transmutation.CircleText(
+        middleCords,
+        remainingRadius * maxRadius,
+        (maxRadius * remainingRadius) / 5
+      );
+    } else {
+      transmutation.Circle(middleCords, remainingRadius * maxRadius);
+    }
+
+    remainingRadius -= radius;
+  }
+};
+
 const draw = (width: number, height: number) => {
   transmutation.Start();
 
   const middleCords = new Vector(width / 2, height / 2);
   let maxRadius = RandomBorder(Math.min(width, height) * 0.48, middleCords);
 
-  maxRadius = RandomMiddle(maxRadius, middleCords);
+  const middleSections = 1 + Math.round(Math.random() * 2);
 
-  transmutation.CircleText(middleCords, maxRadius, 20);
+  for (let i = 0; i < middleSections; i++) {
+    maxRadius = RandomMiddle(maxRadius, middleCords);
+  }
 
-  //   TODO: Determine why 0.69 works
-  transmutation.Circle(middleCords, maxRadius * 0.69);
-
-  transmutation.Circle(middleCords, maxRadius * 0.2);
-  transmutation.CircleText(middleCords, maxRadius * 0.175, 20);
-  transmutation.Circle(middleCords, maxRadius * 0.15);
+  DrawInner(maxRadius, middleCords);
 };
 
 const resizeWindow = () => {

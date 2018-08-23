@@ -1,9 +1,9 @@
 # Transmutation Circle
 
-Procedurally generate random transmutation circles. 
+Procedurally generate random transmutation circles from Fullmetal Alchemist. 
 
 ## Example Output
-![Example](https://i.imgur.com/Jrnq0ci.jpg)
+![Example](https://i.imgur.com/YlbGEqE.png)
 
 ## Inspiration
 
