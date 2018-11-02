@@ -178,7 +178,7 @@ class Transmutation {
         adjustedPos,
         circleRadius,
         angle,
-        new Glyph(this.random.next())
+        new Glyph(this.random)
       );
     }
   }
@@ -219,7 +219,7 @@ class Transmutation {
         pos.add(Vector.fromAngle(angle * i).scale(radius)),
         fontSize,
         angle * i,
-        new Glyph(this.random.next())
+        new Glyph(this.random)
       );
     }
   }

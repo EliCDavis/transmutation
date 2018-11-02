@@ -9,13 +9,9 @@ export { Glyph };
  * width
  */
 class Glyph {
-  private random: Random;
-
   private strokes: Array<Stroke>;
 
-  constructor(randomSeed: number) {
-    this.random = new Random(randomSeed);
-
+  constructor(private random: Random) {
     do {
       this.strokes = this.generateStrokes(this.random);
     } while (this.validStrokes(this.strokes) == false);
