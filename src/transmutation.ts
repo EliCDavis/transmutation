@@ -1,9 +1,7 @@
 import { Vector } from "./vector";
 import { Random } from "./random";
-
+import { Glyph } from "./glyph";
 export { Transmutation };
-
-const characters = "ᏰፈᎴᏋᎦᏠᏝᏁᎧᎮᎤᏕᏖᏬᏉᏇጀፚ";
 
 class Transmutation {
   random: Random;
@@ -79,7 +77,7 @@ class Transmutation {
         this.CircleText(
           middleCords,
           maxRadius * remainingRadius,
-          (maxRadius * remainingRadius) / 15
+          (maxRadius * remainingRadius) / 20
         );
       }
     }
@@ -163,10 +161,13 @@ class Transmutation {
       this.ctx.strokeStyle = this.line;
       this.ctx.fillStyle = this.background;
       const angle = rotation + angleIncrement * vertex;
+      const adjustedPos = Vector.fromAngle(angle)
+        .scale(radius)
+        .add(pos);
       this.ctx.beginPath();
       this.ctx.arc(
-        pos.x() + radius * Math.cos(angle),
-        pos.y() + radius * Math.sin(angle),
+        adjustedPos.x(),
+        adjustedPos.y(),
         circleRadius,
         0,
         Math.PI * 2
@@ -174,11 +175,10 @@ class Transmutation {
       this.ctx.fill();
       this.ctx.stroke();
       this.RotatedSymbol(
-        pos,
-        radius,
+        adjustedPos,
         circleRadius,
-        angle + 0.09,
-        this.RandomSymbol()
+        angle,
+        new Glyph(this.random.next())
       );
     }
   }
@@ -206,25 +206,8 @@ class Transmutation {
     }
   }
 
-  RotatedSymbol(
-    pos: Vector,
-    radius: number,
-    fontSize: number,
-    angle: number,
-    character: string
-  ) {
-    this.ctx.font = Math.round(fontSize) + "px serif";
-    this.ctx.textAlign = "center";
-    this.ctx.fillStyle = this.line;
-    this.ctx.save();
-    this.ctx.translate(pos.x(), pos.y());
-    this.ctx.rotate(angle);
-    this.ctx.fillText(character, radius, 0);
-    this.ctx.restore();
-  }
-
-  RandomSymbol(): string {
-    return characters[Math.floor(this.random.nextFloat() * characters.length)];
+  RotatedSymbol(pos: Vector, size: number, angle: number, glyph: Glyph) {
+    glyph.Draw(this.ctx, pos, Vector.one().scale(size), angle, this.line);
   }
 
   CircleText(pos: Vector, radius: number, fontSize: number) {
@@ -232,7 +215,12 @@ class Transmutation {
     const angle = (Math.PI * 2) / letters;
 
     for (let i = 0; i < letters; i++) {
-      this.RotatedSymbol(pos, radius, fontSize, angle * i, this.RandomSymbol());
+      this.RotatedSymbol(
+        pos.add(Vector.fromAngle(angle * i).scale(radius)),
+        fontSize,
+        angle * i,
+        new Glyph(this.random.next())
+      );
     }
   }
 

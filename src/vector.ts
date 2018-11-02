@@ -1,3 +1,4 @@
+import { Random } from "./random";
 export { Vector };
 
 /**
@@ -34,7 +35,7 @@ class Vector {
    * Determines how far two points are from one another.
    * @param otherPoint The point we're going to see how far away we're from
    */
-  public distance(otherPoint: Vector): number {
+  public dist(otherPoint: Vector): number {
     return Math.abs(
       Math.sqrt(
         Math.pow(otherPoint._x - this._x, 2) +
@@ -56,5 +57,17 @@ class Vector {
 
   public magnitude(): number {
     return Math.sqrt(Math.pow(this._x, 2) + Math.pow(this._y, 2));
+  }
+
+  public static random(seed: Random): Vector {
+    return new Vector(seed.nextFloat(), seed.nextFloat());
+  }
+
+  public static one(): Vector {
+    return new Vector(1.0, 1.0);
+  }
+
+  public static fromAngle(angle: number): Vector {
+    return new Vector(Math.cos(angle), Math.sin(angle));
   }
 }
