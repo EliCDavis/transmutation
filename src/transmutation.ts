@@ -1,6 +1,7 @@
 import { Vector } from "./vector";
 import { Random } from "./random";
 import { Glyph } from "./glyph";
+import { Alphabet } from "./alphabet";
 export { Transmutation };
 
 class Transmutation {
@@ -14,12 +15,22 @@ class Transmutation {
 
   line: string;
 
-  constructor(canvas: HTMLCanvasElement, randomSeed: number) {
+  sentenceToWrite: string;
+
+  characterOn: number;
+
+  alphabet: Alphabet;
+
+  constructor(canvas: HTMLCanvasElement, randomSeed: number, sentence: string) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
     this.random = new Random(randomSeed);
     this.background = "black";
     this.line = "red";
+
+    this.alphabet = new Alphabet(this.random);
+    this.sentenceToWrite = sentence;
+    this.characterOn = 0;
   }
 
   RandomMiddle(maxRadius: number, middleCords: Vector): number {
@@ -36,31 +47,35 @@ class Transmutation {
       Math.PI / 2 + Math.PI / sides // One thing to scramble
     );
 
-    this.PolyMidpointArcs(
-      middleCords,
-      maxRadius,
-      sides * 2,
-      Math.PI / 2 + Math.PI / sides,
-      maxRadius / 2.6
-    );
+    if (this.random.nextFloat() > 0.5) {
+      this.PolyMidpointArcs(
+        middleCords,
+        maxRadius,
+        sides * 2,
+        Math.PI / 2 + Math.PI / sides,
+        maxRadius / 3
+      );
 
-    this.PolyMidpointArcs(
-      middleCords,
-      maxRadius,
-      sides * 2,
-      Math.PI / 2 + Math.PI / sides,
-      maxRadius / 2.3
-    );
+      this.PolyMidpointArcs(
+        middleCords,
+        maxRadius,
+        sides * 2,
+        Math.PI / 2 + Math.PI / sides,
+        maxRadius / 3.5
+      );
+    }
 
     const midpointCircleRadius = maxRadius / 8;
 
-    this.PolyMidpointCircles(
-      middleCords,
-      apothem,
-      sides,
-      Math.PI / 2 + Math.PI / sides,
-      midpointCircleRadius
-    );
+    if (this.random.nextFloat() < 0.5) {
+      this.PolyMidpointCircles(
+        middleCords,
+        apothem,
+        sides,
+        Math.PI / 2 + Math.PI / sides,
+        midpointCircleRadius
+      );
+    }
 
     return (apothem - midpointCircleRadius) * 0.9;
   }
@@ -174,12 +189,7 @@ class Transmutation {
       );
       this.ctx.fill();
       this.ctx.stroke();
-      this.RotatedSymbol(
-        adjustedPos,
-        circleRadius,
-        angle,
-        new Glyph(this.random)
-      );
+      this.SpecialSymbol(adjustedPos, circleRadius, angle);
     }
   }
 
@@ -206,8 +216,24 @@ class Transmutation {
     }
   }
 
-  RotatedSymbol(pos: Vector, size: number, angle: number, glyph: Glyph) {
-    glyph.Draw(this.ctx, pos, Vector.one().scale(size), angle, this.line);
+  NextSymbol(pos: Vector, size: number, angle: number): void {
+    const g = this.alphabet.Glyph(
+      this.sentenceToWrite.charAt(this.characterOn)
+    );
+    if (g !== null) {
+      g.Draw(this.ctx, pos, Vector.one().scale(size), angle, this.line);
+    }
+    this.characterOn = (this.characterOn + 1) % this.sentenceToWrite.length;
+  }
+
+  SpecialSymbol(pos: Vector, size: number, angle: number): void {
+    new Glyph(this.random).Draw(
+      this.ctx,
+      pos,
+      Vector.one().scale(size),
+      angle,
+      this.line
+    );
   }
 
   CircleText(pos: Vector, radius: number, fontSize: number) {
@@ -215,11 +241,10 @@ class Transmutation {
     const angle = (Math.PI * 2) / letters;
 
     for (let i = 0; i < letters; i++) {
-      this.RotatedSymbol(
+      this.NextSymbol(
         pos.add(Vector.fromAngle(angle * i).scale(radius)),
         fontSize,
-        angle * i,
-        new Glyph(this.random)
+        angle * i
       );
     }
   }

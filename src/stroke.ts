@@ -44,6 +44,8 @@ class Stroke {
       scaledEnd.y() * dimensions.y()
     ).add(reAdjust);
 
+    const temp = ctx.lineWidth;
+    ctx.lineWidth = dimensions.magnitude() / 20;
     ctx.beginPath();
 
     ctx.lineTo(scaledStart.x(), scaledStart.y());
@@ -51,5 +53,6 @@ class Stroke {
     ctx.closePath();
 
     ctx.stroke();
+    ctx.lineWidth = temp;
   }
 }
