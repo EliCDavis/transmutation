@@ -8,8 +8,7 @@ const numberOfLettersInAlphabet = 26;
 class Alphabet {
   glyphs: any;
 
-  constructor(private random: Random) {
-    // let letters = new Array<Glyph>(numberOfLettersInAlphabet);
+  constructor(random: Random) {
     this.glyphs = {};
     for (
       let currentLetter = 0;
