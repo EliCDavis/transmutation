@@ -13,6 +13,14 @@ class BorderConfig {
   GetBorderTypes(): Array<BorderType> {
     return this.borders;
   }
+
+  Shorthand(): string {
+    return this.borders
+      .map(type => (type === BorderType.Line ? "L" : "T"))
+      .reduce((previous: any, current: any) => {
+        return previous + current;
+      });
+  }
 }
 
 function RandomBorderConfig(random: Random): BorderConfig {

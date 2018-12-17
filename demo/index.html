@@ -1,25 +1,165 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+  <head>
+    <script src="http://localhost:35729/livereload.js"></script>
+    <title>Transmutation</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Cinzel"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
 
-<head>
-  <script src="http://localhost:35729/livereload.js"></script>
-  <title>Transmutation</title>
-  <style>
-    * { margin: 0; padding: 0;}
-    
-    body, html { height:100%; }
-    
-    #Transmutation {
-        position:absolute;
-        width:100%;
-        height:100%;
-    }
-  </style>
-</head>
+      body,
+      html {
+        height: 100%;
+      }
 
-<body>
-  <canvas id="Transmutation"></canvas>
-  <script src="bundle.js"></script>
-</body>
+      #Transmutation {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
 
+      .floating-panel {
+        margin: 8px;
+        position: fixed;
+        z-index: 1;
+        max-height: 90%;
+      }
+
+      .info-hidden {
+        display: none;
+      }
+
+      .info-showing {
+        font-family: "Cinzel", serif;
+        display: flex;
+        flex-direction: column;
+        color: #ffffff;
+        border-width: 1px;
+        border-style: solid;
+        border-color: white;
+        border-radius: 4%;
+        padding: 8px;
+        background-color: rgba(1, 1, 1, 0.5);
+        font-size: 18px;
+      }
+
+      button {
+        border-radius: 3%;
+        border-style: solid;
+        border-width: 1px;
+        padding: 8px;
+      }
+
+      a {
+        color: red;
+      }
+
+      #page-title {
+        font-family: "Cinzel", serif;
+        font-size: 32px;
+        color: #f5f5f5;
+        padding: 0%;
+      }
+
+      .section {
+        margin-bottom: 12px;
+      }
+
+      #page-subtitle {
+        font-family: "Cinzel", serif;
+        font-size: 24px;
+        color: #f5f5f5;
+        padding: 0%;
+      }
+
+      @media screen and (min-width: 768px) {
+        .mobile-show {
+          max-width: 260px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <a
+      href="https://github.com/EliCDavis/transmutation#transmutation-circle"
+      style="position: fixed; z-index: 1; right: 8px; bottom:8px; font-family: 'Cinzel', serif; font-size: 24px;"
+      >About Me</a
+    >
+
+    <div class="mobile-show floating-panel">
+      <h1 id="page-title">Transmutation Circles</h1>
+
+      <small id="page-subtitle">Rapture idea gone to far.</small>
+
+      <br />
+
+      <a id="hover-for-display" onclick="revealHiddenInformation()">
+        Click Me To Configure
+      </a>
+
+      <br />
+
+      <div id="secret-info" class="info-hidden" style="max-height: 60%;">
+        <div class="section">Evil Seed: <input type="number" id="seed" /></div>
+
+        <div class="section">
+          Text to Inscribe:
+          <textarea
+            placeholder="Enter your sentence here"
+            style="width:100%"
+            id="text-to-inscribe"
+          ></textarea>
+        </div>
+
+        <div class="section">
+          Outer Border: <input type="text" id="outer-border" />
+        </div>
+
+        <div class="section">Polygons: <input type="text" id="polygons" /></div>
+
+        <div class="section">
+          Inner Border: <input type="text" id="inner-border" />
+        </div>
+
+        Inner Polygon:<br />
+        <div style="display: flex; flex-direction: column; padding-left: 16px;">
+          <div>
+            Sides: <input type="number" min="3" id="inner-polygon-sides" />
+          </div>
+          <div>
+            Circles: <input id="inner-polygon-circles" type="checkbox" />
+          </div>
+          <div>Arcs: <input type="checkbox" id="inner-polygon-arcs" /></div>
+        </div>
+        <br />
+
+        <br />
+        <button style="margin-bottom: 8px;" id="random-circle" style="flex: 1;">
+          Random
+        </button>
+
+        <button onclick="hideInformation()">Close</button>
+      </div>
+    </div>
+    <script>
+      function revealHiddenInformation() {
+        document.getElementById("secret-info").className = "info-showing";
+        document.getElementById("hover-for-display").className = "info-hidden";
+      }
+
+      function hideInformation() {
+        document.getElementById("secret-info").className = "info-hidden";
+        document.getElementById("hover-for-display").className = "";
+      }
+    </script>
+    <canvas id="Transmutation"></canvas>
+    <script src="bundle.js"></script>
+  </body>
 </html>

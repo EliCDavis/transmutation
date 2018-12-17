@@ -20,6 +20,10 @@ class PolygonConfig {
   Arcs(): boolean {
     return this.arcs;
   }
+
+  Shorthand(): string {
+    return this.sides + (this.circles ? "T" : "F") + (this.arcs ? "T" : "F");
+  }
 }
 
 function RandomPolygonConfig(random: Random): PolygonConfig {

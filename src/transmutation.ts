@@ -26,6 +26,10 @@ class Transmutation {
     this.config = config;
   }
 
+  SetConfig(config: Config) {
+    this.config = config;
+  }
+
   DrawMiddle(
     maxRadius: number,
     middleCords: Vector,
