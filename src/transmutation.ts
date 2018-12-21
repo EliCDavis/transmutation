@@ -89,7 +89,7 @@ class Transmutation {
       );
     }
 
-    return (apothem - midpointCircleRadius) * 0.99;
+    return (apothem - midpointCircleRadius) * 0.99; // this percent is a variable to toggle
   }
 
   DrawBorder(
@@ -289,10 +289,10 @@ class Transmutation {
   }
 
   CircleText(pos: Vector, radius: number, fontSize: number, rotation: number) {
-    const letters = (radius / fontSize) * 4;
+    const letters = ((radius * Math.PI * 2) / fontSize) * 0.7;
     const angle = (Math.PI * 2) / letters;
 
-    for (let i = 0; i < letters; i++) {
+    for (let i = 0; i < letters - 1; i++) {
       const curAngle = angle * i + rotation;
       this.NextSymbol(
         pos.add(Vector.fromAngle(curAngle).scale(radius)),

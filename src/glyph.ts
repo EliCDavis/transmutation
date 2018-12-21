@@ -38,20 +38,13 @@ class Glyph {
     let pointPoitions = [[], [], []];
 
     // Pick random points
-    // let chosenPoints = new Array<Vector>();
     probabiliesForPoints.forEach((row, rowIndex) => {
       row.forEach((entry, entryIndex) => {
         if (this.random.nextFloat() > entry) {
-          // chosenPoints.push(
-          //   new Vector(entryIndex, rowIndex)
-          //   // .add(
-          //   //   Vector.random(this.random).scale(0.2)
-          //   // )
-          // );
           points[rowIndex][entryIndex] = true;
           pointPoitions[rowIndex][entryIndex] = new Vector(
-            rowIndex + this.random.nextFloat() * 0.2,
-            entryIndex + this.random.nextFloat() * 0.2
+            rowIndex + this.random.nextFloat() * 0.3,
+            entryIndex + this.random.nextFloat() * 0.3
           ).scale(0.5);
         }
       });
@@ -67,7 +60,7 @@ class Glyph {
         validX &&
         validY &&
         points[otherX][otherY] &&
-        this.random.nextFloat() > 0.5
+        this.random.nextFloat() > 0.7
       );
     };
 
@@ -172,6 +165,21 @@ class Glyph {
 
         if (allValid(bottomRightTriangle)) {
           delete potentialStrokes[bottomRightTriangle[2]];
+        }
+      }
+    }
+
+    // clear criss crosses
+    for (let x = 0; x < width - 1; x++) {
+      for (let y = 0; y < height - 1; y++) {
+        const crosses = [
+          pointsToString(x, y, x + 1, y + 1),
+          pointsToString(x + 1, y, x, y + 1)
+        ];
+        if (allValid(crosses)) {
+          delete potentialStrokes[
+            crosses[Math.floor(crosses.length * this.random.nextFloat())]
+          ];
         }
       }
     }

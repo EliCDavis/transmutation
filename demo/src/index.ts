@@ -15,7 +15,7 @@ let sentenceToWrite =
   "My first name is a random set of numbers and letters \
 And other alphanumerics that changes hourly forever";
 
-let seed = Math.round(666); // Math.random() * 2147483647
+let seed = Math.round(Math.random() * 2147483647); //
 
 let random = new Random(seed);
 
