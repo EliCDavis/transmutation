@@ -12,7 +12,9 @@ class Config {
     private borderConfig: BorderConfig,
     private polgonConfigs: Array<PolygonConfig>,
     private innerBoarderConfig: BorderConfig,
-    private innerPolygonConfig: PolygonConfig
+    private innerPolygonConfig: PolygonConfig,
+    private textSize: number,
+    private lineColor: string
   ) {}
 
   GetSentence(): string {
@@ -38,6 +40,14 @@ class Config {
   GetInnerPolygonConfig(): PolygonConfig {
     return this.innerPolygonConfig;
   }
+
+  GetTextScale(): number {
+    return this.textSize;
+  }
+
+  GetLineColor(): string {
+    return this.lineColor;
+  }
 }
 
 function RandomConfig(sentence: string, random: Random): Config {
@@ -59,6 +69,8 @@ function RandomConfig(sentence: string, random: Random): Config {
           3 + Math.round(random.nextFloat() * 3),
           random.nextFloat() >= 0.5,
           random.nextFloat() >= 0.5
-        )
+        ),
+    1,
+    "red"
   );
 }

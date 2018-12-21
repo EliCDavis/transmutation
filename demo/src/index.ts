@@ -9,14 +9,17 @@ import {
 } from "../../src";
 import { BorderType, BorderConfig } from "../../src/borderconfig";
 import { PolygonConfig } from "../../src/PolygonConfig";
+import { Vector } from "../../src/vector";
 
 let sentenceToWrite =
   "My first name is a random set of numbers and letters \
 And other alphanumerics that changes hourly forever";
 
-let seed = Math.round(Math.random() * 2147483647);
+let seed = Math.round(666); // Math.random() * 2147483647
 
 let random = new Random(seed);
+
+let rotate = true;
 
 const canvas = document.getElementById("Transmutation") as HTMLCanvasElement;
 
@@ -27,7 +30,33 @@ const transmutation = new Transmutation(canvas, transmutationConfig);
 const resizeWindow = () => {
   canvas.width = canvas.clientWidth;
   canvas.height = canvas.clientHeight;
-  transmutation.Draw(canvas.width, canvas.height, new Date().getTime() / 10000);
+
+  // var alphabet = new Alphabet(random);
+
+  // var dimensions = Vector.one().scale(40);
+  // var offset = Vector.one().scale(200);
+
+  // for (let i = 0; i < 26; i++) {
+  //   alphabet
+  //     .Glyph(String.fromCharCode(65 + i))
+  //     .Draw(
+  //       canvas.getContext("2d"),
+  //       new Vector(
+  //         (i % 13) * (dimensions.x() + 15),
+  //         Math.floor(i / 13) * (dimensions.y() + 15)
+  //       ).add(offset),
+  //       dimensions,
+  //       0,
+  //       "black"
+  //     );
+  // }
+
+  transmutation.Draw(
+    canvas.width,
+    canvas.height,
+    rotate ? new Date().getTime() / 10000 : 0
+  );
+  console.log(transmutation.GetCharacterOn());
   window.requestAnimationFrame(resizeWindow);
 };
 
@@ -72,6 +101,8 @@ const borderFromString = (input: string): BorderConfig => {
   for (var i = 0; i < input.length; i++) {
     if (input.charAt(i) === "L") {
       out.push(BorderType.Line);
+    } else if (input.charAt(i) === "S") {
+      out.push(BorderType.Space);
     } else if (input.charAt(i) === "T") {
       out.push(BorderType.Text);
     }
@@ -127,7 +158,9 @@ const buildCircleFromForm = () => {
     outerBorder,
     polygons,
     innerBorder,
-    innerPolygon
+    innerPolygon,
+    $("symbol-scale").value < 0.1 ? 0.1 : $("symbol-scale").value,
+    "black"
   );
   transmutation.SetConfig(newConfig);
 };
@@ -140,3 +173,8 @@ $("polygons").oninput = buildCircleFromForm;
 $("inner-polygon-sides").oninput = buildCircleFromForm;
 $("inner-polygon-circles").oninput = buildCircleFromForm;
 $("inner-polygon-arcs").oninput = buildCircleFromForm;
+$("symbol-scale").oninput = buildCircleFromForm;
+
+$("animate").oninput = () => {
+  rotate = $("animate").checked;
+};

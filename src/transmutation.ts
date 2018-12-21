@@ -11,8 +11,6 @@ class Transmutation {
 
   background: string;
 
-  line: string;
-
   characterOn: number;
 
   config: Config;
@@ -20,10 +18,13 @@ class Transmutation {
   constructor(canvas: HTMLCanvasElement, config: Config) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
-    this.background = "black";
-    this.line = "red";
+    this.background = "white";
     this.characterOn = 0;
     this.config = config;
+  }
+
+  GetCharacterOn(): number {
+    return this.characterOn;
   }
 
   SetConfig(config: Config) {
@@ -88,7 +89,7 @@ class Transmutation {
       );
     }
 
-    return (apothem - midpointCircleRadius) * 0.9;
+    return (apothem - midpointCircleRadius) * 0.99;
   }
 
   DrawBorder(
@@ -105,11 +106,14 @@ class Transmutation {
           this.Circle(middleCords, maxRadius * remainingRadius);
           break;
 
+        case BorderType.Space:
+          break;
+
         case BorderType.Text:
           this.CircleText(
             middleCords,
             maxRadius * remainingRadius,
-            (maxRadius * remainingRadius) / 20,
+            ((maxRadius * remainingRadius) / 20) * this.config.GetTextScale(),
             rotation * direction
           );
           direction *= -1;
@@ -183,7 +187,7 @@ class Transmutation {
   }
 
   Polygon(pos: Vector, radius: number, sides: number, rotation: number): void {
-    this.ctx.strokeStyle = this.line;
+    this.ctx.strokeStyle = this.config.GetLineColor();
     this.ctx.beginPath();
     const angleIncrement = (Math.PI * 2) / sides;
 
@@ -209,7 +213,7 @@ class Transmutation {
     const angleIncrement = (Math.PI * 2) / sides;
 
     for (let vertex = 0; vertex < sides; vertex++) {
-      this.ctx.strokeStyle = this.line;
+      this.ctx.strokeStyle = this.config.GetLineColor();
       this.ctx.fillStyle = this.background;
       const angle = rotation + angleIncrement * vertex;
       const adjustedPos = Vector.fromAngle(angle)
@@ -235,7 +239,7 @@ class Transmutation {
     sides: number,
     rotation: number
   ) {
-    this.ctx.strokeStyle = this.line;
+    this.ctx.strokeStyle = this.config.GetLineColor();
 
     const angleIncrement = (Math.PI * 2) / sides;
 
@@ -255,14 +259,23 @@ class Transmutation {
   NextSymbol(pos: Vector, size: number, angle: number): void {
     const g = this.config
       .GetAlphabet()
-      .Glyph(this.config.GetSentence().charAt(this.characterOn));
+      .Glyph(
+        this.config
+          .GetSentence()
+          .charAt(this.characterOn % this.config.GetSentence().length)
+      );
 
     if (g !== null) {
-      g.Draw(this.ctx, pos, Vector.one().scale(size), angle, this.line);
+      g.Draw(
+        this.ctx,
+        pos,
+        Vector.one().scale(size),
+        angle,
+        this.config.GetLineColor()
+      );
     }
 
-    this.characterOn =
-      (this.characterOn + 1) % this.config.GetSentence().length;
+    this.characterOn += 1;
   }
 
   SpecialSymbol(pos: Vector, size: number, angle: number): void {
@@ -290,7 +303,7 @@ class Transmutation {
   }
 
   Circle(pos: Vector, radius: number) {
-    this.ctx.strokeStyle = this.line;
+    this.ctx.strokeStyle = this.config.GetLineColor();
     this.ctx.beginPath();
     this.ctx.arc(pos.x(), pos.y(), radius, 0, Math.PI * 2);
     this.ctx.stroke();
@@ -315,7 +328,7 @@ class Transmutation {
     rotation: number,
     arcRadius: number
   ) {
-    this.ctx.strokeStyle = this.line;
+    this.ctx.strokeStyle = this.config.GetLineColor();
     this.ctx.fillStyle = this.background;
 
     const angleIncrement = (Math.PI * 2) / sides;

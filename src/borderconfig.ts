@@ -4,7 +4,8 @@ export { BorderConfig, BorderType, RandomBorderConfig };
 
 enum BorderType {
   Line,
-  Text
+  Text,
+  Space
 }
 
 class BorderConfig {
