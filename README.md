@@ -1,6 +1,6 @@
 # Transmutation Circle
 
-Procedurally generate random transmutation circles from Fullmetal Alchemist. 
+Procedurally generate random transmutation circles from Fullmetal Alchemist. Implemented in both the web browser and an exmaple Unity Project
 
 ## Example Output
 ![Example](https://i.imgur.com/whwAPQU.png)
