@@ -12,6 +12,8 @@ namespace EliCDavis.Transmutation
 
         private IDrawingTool drawingTool;
 
+        private List<SkillPlacement> symbolPositions;
+
         public TransmutationCircle(Config config, IDrawingTool drawingTool)
         {
             this.config = config;
@@ -19,16 +21,18 @@ namespace EliCDavis.Transmutation
             this.characterOn = 0;
         }
 
-        public void Draw(float x, float y)
+        public SkillPlacement[] Draw(float x, float y)
         {
-            Draw(new Vector2(x, y));
+            return Draw(new Vector2(x, y));
         }
 
-        public void Draw(Vector2 dimensions)
+        public SkillPlacement[] Draw(Vector2 dimensions)
         {
             var middleCords = dimensions / 2;
 
             float maxRadius = Mathf.Min(dimensions.x, dimensions.y);
+
+            symbolPositions = new List<SkillPlacement>();
 
             if (config.GetBorderConfig() != null)
             {
@@ -52,6 +56,10 @@ namespace EliCDavis.Transmutation
             {
                 maxRadius = DrawMiddle(maxRadius, middleCords, config.GetInnerPolygonConfig());
             }
+
+            symbolPositions.Add(new SkillPlacement(middleCords, maxRadius));
+
+            return symbolPositions.ToArray();
         }
 
         private void NextSymbol(Vector3 pos, float size, float angle)
@@ -133,6 +141,7 @@ namespace EliCDavis.Transmutation
                 float angle = rotation + angleIncrement * vertex;
                 Vector3 adjustedPosition = (new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius) + position;
                 drawingTool.Circle(adjustedPosition, circleRadius, 1);
+                symbolPositions.Add(new SkillPlacement(adjustedPosition, circleRadius));
             }
         }
 

@@ -77,16 +77,16 @@ namespace EliCDavis.Transmutation
                 }
             }
 
-            // for (int pointIndex = 0; pointIndex < chosenPoints.Count; pointIndex++)
-            // {
-            //     if (!pointsAdded.Contains(pointIndex) && Random.value > 0.8)
-            //     {
-            //         strokes.Add(new Stroke(
-            //                 chosenPoints[pointIndex] * .5f,
-            //                 chosenPoints[pointIndex] * 0.55f));
-            //         break;
-            //     }
-            // }
+            for (int pointIndex = 0; pointIndex < chosenPoints.Count; pointIndex++)
+            {
+                if (!pointsAdded.Contains(pointIndex) && Random.value > 0.8)
+                {
+                    strokes.Add(new Stroke(
+                            chosenPoints[pointIndex] * .5f,
+                            chosenPoints[pointIndex] * 0.55f));
+                    break;
+                }
+            }
 
             return strokes.ToArray();
         }

@@ -21,10 +21,11 @@ namespace EliCDavis.Transmutation
 
         private LineRenderer NewLine(float thickness)
         {
-            GameObject lineObject = new GameObject("Circle");
+            GameObject lineObject = new GameObject("Line");
             lineObject.transform.SetParent(parent);
 
             var line = lineObject.AddComponent<LineRenderer>();
+            line.useWorldSpace = false;
             line.material = lineMaterial;
             line.startWidth = 0.1f * thickness;
             line.endWidth = 0.1f * thickness;

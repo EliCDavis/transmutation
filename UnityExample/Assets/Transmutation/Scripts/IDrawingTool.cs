@@ -10,7 +10,6 @@ namespace EliCDavis.Transmutation
         void Polygon(Vector2 center, float radius, int sides, float rotation, float thickness);
 
         void Circle(Vector2 center, float radius, float thickness);
-
     }
 
 }
