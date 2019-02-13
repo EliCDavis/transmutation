@@ -8,20 +8,17 @@ namespace EliCDavis.Transmutation
 
         private bool circles;
 
-        private bool arcs;
 
-        public PolygonConfig(int sides, bool circles, bool arcs)
+        public PolygonConfig(int sides, bool circles)
         {
             this.sides = sides;
             this.circles = circles;
-            this.arcs = arcs;
         }
 
         public static PolygonConfig RandomConfig()
         {
             return new PolygonConfig(
                 Random.Range(3, 8),
-                Random.value > .5,
                 Random.value > .5
             );
         }
@@ -34,9 +31,6 @@ namespace EliCDavis.Transmutation
             return circles;
         }
 
-        public bool Arcs(){
-            return arcs;
-        }
     }
 
 }

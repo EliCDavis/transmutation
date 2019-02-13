@@ -46,7 +46,7 @@ namespace EliCDavis.Transmutation
               scaledEnd.y * dimensions.y
             ) + reAdjust;
 
-            drawingTool.Line(scaledStart, scaledEnd, .5f);
+            drawingTool.Line(scaledStart, scaledEnd, dimensions.magnitude);
         }
 
     }

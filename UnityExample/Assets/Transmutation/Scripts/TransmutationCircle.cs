@@ -14,6 +14,8 @@ namespace EliCDavis.Transmutation
 
         private List<SkillPlacement> symbolPositions;
 
+        private float lineThickness;
+
         public TransmutationCircle(Config config, IDrawingTool drawingTool)
         {
             this.config = config;
@@ -31,6 +33,8 @@ namespace EliCDavis.Transmutation
             var middleCords = dimensions / 2;
 
             float maxRadius = Mathf.Min(dimensions.x, dimensions.y);
+
+            lineThickness = dimensions.magnitude / 20;
 
             symbolPositions = new List<SkillPlacement>();
 
@@ -103,7 +107,7 @@ namespace EliCDavis.Transmutation
                 switch (type)
                 {
                     case BorderType.Line:
-                        drawingTool.Circle(middleCords, maxRadius * remainingRadius, 1f);
+                        drawingTool.Circle(middleCords, maxRadius * remainingRadius, lineThickness);
                         break;
 
                     case BorderType.Text:
@@ -128,7 +132,7 @@ namespace EliCDavis.Transmutation
                         Mathf.Cos(rotation + angleIncrement * vertex) * radius,
                         Mathf.Sin(rotation + angleIncrement * vertex) * radius
                     ) + position,
-                    1
+                    lineThickness
                 );
             }
         }
@@ -140,7 +144,7 @@ namespace EliCDavis.Transmutation
             {
                 float angle = rotation + angleIncrement * vertex;
                 Vector3 adjustedPosition = (new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius) + position;
-                drawingTool.Circle(adjustedPosition, circleRadius, 1);
+                drawingTool.Circle(adjustedPosition, circleRadius, lineThickness);
                 symbolPositions.Add(new SkillPlacement(adjustedPosition, circleRadius));
             }
         }
@@ -149,8 +153,8 @@ namespace EliCDavis.Transmutation
         {
             float apothem = maxRadius * Mathf.Cos(Mathf.PI / polyConfig.Sides());
 
-            drawingTool.Polygon(middleCords, maxRadius, polyConfig.Sides() * 2, Mathf.PI / 2, 1);
-            drawingTool.Polygon(middleCords, maxRadius, polyConfig.Sides(), Mathf.PI / 2, 1);
+            drawingTool.Polygon(middleCords, maxRadius, polyConfig.Sides() * 2, Mathf.PI / 2, lineThickness);
+            drawingTool.Polygon(middleCords, maxRadius, polyConfig.Sides(), Mathf.PI / 2, lineThickness);
             PolyVertexIntersections(middleCords, maxRadius, polyConfig.Sides() * 2, (Mathf.PI / 2 + Mathf.PI / polyConfig.Sides()));
 
             float midpointCircleRadius = maxRadius / 8.0f;

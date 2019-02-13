@@ -23,6 +23,7 @@ namespace EliCDavis.Transmutation
         {
             GameObject lineObject = new GameObject("Line");
             lineObject.transform.SetParent(parent);
+            lineObject.transform.localPosition = Vector3.zero;
 
             var line = lineObject.AddComponent<LineRenderer>();
             line.useWorldSpace = false;

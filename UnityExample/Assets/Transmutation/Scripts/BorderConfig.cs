@@ -4,10 +4,9 @@ namespace EliCDavis.Transmutation
 {
     public class BorderConfig
     {
-
         private BorderType[] borders;
 
-        public BorderConfig(BorderType[] borders)
+        public BorderConfig(params BorderType[] borders)
         {
             this.borders = borders;
         }
